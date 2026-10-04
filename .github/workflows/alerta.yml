@@ -1,0 +1,30 @@
+name: Alerta de Push a ntfy.sh
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  alerta:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Clonar repositorio
+        uses: actions/checkout@v4
+
+      - name: Configurar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Ejecutar Hola Mundo
+        run: node index.js
+
+      - name: Enviar notificacion a ntfy.sh
+        run: |
+          curl -H "Title: DevOps ITLA - Alerta de Push" \
+               -H "Priority: high" \
+               -H "Tags: white_check_mark,rocket" \
+               -d "Se ha subido codigo nuevo a la rama main por ${{ github.actor }}. Programa Hola Mundo ejecutado exitosamente." \
+               https://ntfy.sh/devops-itla
